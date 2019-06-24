@@ -32,5 +32,42 @@ namespace ClientFTP
         {
             client.Disconnect();
         }
+
+        /// <summary> filePath est le chemin d'acces du fichier local, 
+        /// remoteDestination est la destination du fichier sur le serveur </summary>
+        /// <param name="filePath"></param>
+        /// <param name="remoteDestination"></param>
+        public static void UploadFile(String filePath, String remoteDestination = "/")
+        {
+            //Ajoute un separateur si besoin
+            if (remoteDestination[remoteDestination.Length - 1] != '/') remoteDestination += '/';
+
+            //Ajoute le nom du fichier
+            string[] path = filePath.Split(new[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
+            remoteDestination += path[path.Length-1];
+
+            Console.WriteLine("Uploading " + path[path.Length-1] + " ...");
+
+            client.UploadFile(filePath, remoteDestination);
+        }
+
+        /// <summary> filePath est le chemin d'acces du fichier sur le serveur, 
+        /// localDestination est la destination du fichier en local </summary>
+        /// <param name="filePath"></param>
+        /// <param name="localDestination"></param>
+        public static void DownloadFile(String filePath, String localDestination)
+        {
+            //Ajoute un separateur si besoin
+            if (localDestination[localDestination.Length - 1] != '/') localDestination += '/';
+            if (filePath[0] != '/') filePath = '/' + filePath;
+
+            //Ajoute le nom du fichier
+            string[] path = filePath.Split(new[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
+            localDestination += path[path.Length - 1];
+
+            Console.WriteLine("Downloading " + filePath + " ...");
+
+            client.DownloadFile(localDestination, filePath);
+        }
     }
 }
