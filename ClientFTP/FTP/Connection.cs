@@ -8,7 +8,7 @@ namespace ClientFTP
     {
         public static FtpClient client;
 
-        public static void Start()
+        public static void Open()
         {
             // create an FTP client
             client = new FtpClient("127.0.0.1");
@@ -26,6 +26,11 @@ namespace ClientFTP
             // get a list of files and directories
             foreach (FtpListItem item in client.GetListing(""))
                 Console.WriteLine(item);
+        }
+
+        public static void Close()
+        {
+            client.Disconnect();
         }
     }
 }
