@@ -1,5 +1,6 @@
 ﻿using FluentFTP;
 using System;
+using System.Linq;
 using System.Net;
 
 namespace ClientFTP
@@ -21,6 +22,11 @@ namespace ClientFTP
             client.Connect();
         }
 
+        public static void Close()
+        {
+            client.Disconnect();
+        }
+
         public static void DisplayFiles()
         {
             // get a list of files and directories
@@ -28,25 +34,28 @@ namespace ClientFTP
                 Console.WriteLine(item);
         }
 
-        public static void Close()
+        private static string GetName(string file)
         {
-            client.Disconnect();
+            string[] path = file.Split(new[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
+            return path[path.Length - 1];
         }
+
+        //TODO: Rendre ces fonctions plus robustes
 
         /// <summary> filePath est le chemin d'acces du fichier local, 
         /// remoteDestination est la destination du fichier sur le serveur </summary>
         /// <param name="filePath"></param>
         /// <param name="remoteDestination"></param>
-        public static void UploadFile(String filePath, String remoteDestination = "/")
+        public static void UploadFile(string filePath, string remoteDestination = "/")
         {
             //Ajoute un separateur si besoin
             if (remoteDestination[remoteDestination.Length - 1] != '/') remoteDestination += '/';
 
             //Ajoute le nom du fichier
-            string[] path = filePath.Split(new[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
-            remoteDestination += path[path.Length-1];
+            string fileName = GetName(filePath);
+            remoteDestination += fileName;
 
-            Console.WriteLine("Uploading " + path[path.Length-1] + " ...");
+            Console.WriteLine("Uploading " + fileName + " ...");
 
             client.UploadFile(filePath, remoteDestination);
         }
@@ -55,19 +64,87 @@ namespace ClientFTP
         /// localDestination est la destination du fichier en local </summary>
         /// <param name="filePath"></param>
         /// <param name="localDestination"></param>
-        public static void DownloadFile(String filePath, String localDestination)
+        public static void DownloadFile(string filePath, string localDestination)
         {
             //Ajoute un separateur si besoin
             if (localDestination[localDestination.Length - 1] != '/') localDestination += '/';
             if (filePath[0] != '/') filePath = '/' + filePath;
 
             //Ajoute le nom du fichier
-            string[] path = filePath.Split(new[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
-            localDestination += path[path.Length - 1];
+            string fileName = GetName(filePath);
+            localDestination += fileName;
 
-            Console.WriteLine("Downloading " + filePath + " ...");
+            Console.WriteLine("Downloading " + fileName + " ...");
 
             client.DownloadFile(localDestination, filePath);
+        }
+
+        /// <summary>
+        /// Bouge un fichier. file est le fichier a bouger, newPath est le dossier de destination. Attention le dossier de destination doit exister
+        /// </summary>
+        /// <param name="file"></param>
+        /// <param name="newPath"></param>
+        public static void Move(string file, string newPath)
+        {
+            //Ajoute un separateur si besoin
+            if (file[0] != '/') file = '/' + file;
+            if (newPath[0] != '/') newPath = '/' + newPath;
+
+            client.MoveFile(file, newPath + "/" + GetName(file));
+        }
+
+        /// <summary>
+        /// Renomme un fichier. path est le fichier a renommer, newName est son nouveau nom
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="newName"></param>
+        public static void Rename(string path, string newName)
+        {
+            //Ajoute un separateur si besoin
+            if (path[0] != '/') path = '/' + path;
+
+            string dest = path.Substring(0, path.LastIndexOf('/') + 1) + newName;
+
+            client.Rename(path, dest);
+        }
+
+        /// <summary>
+        /// Supprime un fichier
+        /// </summary>
+        /// <param name="path"></param>
+        public static void Delete(string path)
+        {
+            //Ajoute un separateur si besoin
+            if (path[0] != '/') path = '/' + path;
+
+            client.DeleteFile(path);
+        }
+
+        /// <summary>
+        /// Renvoie une liste des fichiers/dossiers presents dans le dossier specifie
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static FtpClientFile[] GetAllFiles(string path = "/")
+        {
+            //Ajoute un separateur si besoin
+            if (path[0] != '/') path = '/' + path;
+
+            return client.GetListing(path).Select(file => new FtpClientFile(file.Name, file.Type == FtpFileSystemObjectType.Directory, file.FullName)).ToArray<FtpClientFile>();
+        }
+    }
+
+    class FtpClientFile {
+
+        public readonly string name;
+        public readonly bool isDirectory;
+        public readonly string path;
+        
+        public FtpClientFile(string name, bool isDir, string path)
+        {
+            this.name = name;
+            isDirectory = isDir;
+            this.path = path;
         }
     }
 }
