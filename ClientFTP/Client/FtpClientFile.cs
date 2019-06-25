@@ -4,7 +4,6 @@ namespace ClientFTP
 {
     class FtpClientFile
     {
-
         public readonly string path;
         public readonly bool isDirectory;
 
@@ -31,6 +30,10 @@ namespace ClientFTP
             //Ajoute un separateur si besoin
             if (this.isDirectory && this.path[this.path.Length - 1] != '/')
                 this.path += '/';
+
+            //Supprime le dernier / si besoin
+            if ( ! this.isDirectory && this.path[this.path.Length - 1] == '/')
+                this.path = this.path.Substring(0, this.path.Length - 1);
         }
 
         public string GetName() => GetName(this.path);

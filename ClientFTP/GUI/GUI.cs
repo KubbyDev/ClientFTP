@@ -33,7 +33,7 @@ namespace ClientFTP
 
         public static void Disconnect()
         {
-            if (!Connection.isConnectionActive())
+            if (!Connection.IsConnectionActive())
                 return;
             try
             {
@@ -48,9 +48,9 @@ namespace ClientFTP
 
         public static void Connect()
         {
-            if (Connection.isConnectionActive()) {
+            if (Connection.IsConnectionActive()) {
                 Disconnect();
-                if (Connection.isConnectionActive()) return;
+                if (Connection.IsConnectionActive()) return;
             }
             try
             {

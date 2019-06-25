@@ -9,7 +9,7 @@ namespace ClientFTP
     {
         public static FtpClient client = null;
 
-        public static bool isConnectionActive()
+        public static bool IsConnectionActive()
         {
             return (client!=null);
         }
@@ -103,7 +103,7 @@ namespace ClientFTP
             //Si le fichier de depart est un dossier on download tous les fichiers dedans
             if (fileToDownload.isDirectory)
             {
-                foreach (FtpClientFile file in GetAllFiles(fileToDownload.path))
+                foreach (FtpClientFile file in GetAllFiles(fileToDownload))
                     DownloadFile(file, new FtpClientFile(destinationFolder.path + fileToDownload.name, true));
 
                 return;
@@ -135,57 +135,56 @@ namespace ClientFTP
         }
 
         /// <summary>
-        /// Bouge un fichier. file est le fichier a bouger, newPath est le dossier de destination. Attention le dossier de destination doit exister
+        /// Bouge un fichier. file est le fichier a bouger, newFolder est le dossier de destination
         /// </summary>
         /// <param name="file"></param>
-        /// <param name="newPath"></param>
-        public static void Move(string file, string newPath)
+        /// <param name="newFolder"></param>
+        public static void Move(FtpClientFile file, FtpClientFile newFolder)
         {
-            //Ajoute un separateur si besoin
-            if (file[0] != '/') file = '/' + file;
-            if (newPath[0] != '/') newPath = '/' + newPath;
+            //Si le dossier de destination n'est pas un dossier on devient tout rouge
+            if (!newFolder.isDirectory)
+            {
+                Console.Error.WriteLine("The new folder must be a folder !");
+                return;
+            }
 
-            client.MoveFile(file, newPath + "/" + FtpClientFile.GetName(file));
+            //Si le dossier de destination n'existe pas on le cree
+            client.CreateDirectory(newFolder.path);
+
+            client.MoveFile(file.path, newFolder.path + file.GetName());
         }
 
         /// <summary>
-        /// Renomme un fichier. path est le fichier a renommer, newName est son nouveau nom
+        /// Renomme un fichier. file est le fichier a renommer, newName est son nouveau nom
         /// </summary>
         /// <param name="path"></param>
         /// <param name="newName"></param>
-        public static void Rename(string path, string newName)
+        public static void Rename(FtpClientFile file, string newName)
         {
-            //Ajoute un separateur si besoin
-            if (path[0] != '/') path = '/' + path;
-
-            string dest = path.Substring(0, path.LastIndexOf('/') + 1) + newName;
-
-            client.Rename(path, dest);
+            string newPath = file.path.Substring(0, file.path.LastIndexOf('/') + 1) + newName;
+            client.Rename(file.path, newPath);
         }
 
         /// <summary>
         /// Supprime un fichier
         /// </summary>
-        /// <param name="path"></param>
-        public static void Delete(string path)
+        /// <param name="file"></param>
+        public static void Delete(FtpClientFile file)
         {
-            //Ajoute un separateur si besoin
-            if (path[0] != '/') path = '/' + path;
-
-            client.DeleteFile(path);
+            client.DeleteFile(file.path);
         }
 
         /// <summary>
         /// Renvoie une liste des fichiers/dossiers presents dans le dossier specifie
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="inFolder"></param>
         /// <returns></returns>
-        public static FtpClientFile[] GetAllFiles(string path = "/")
+        public static FtpClientFile[] GetAllFiles(FtpClientFile inFolder)
         {
-            //Ajoute un separateur si besoin
-            if (path[0] != '/') path = '/' + path;
+            if (!inFolder.isDirectory)
+                return new FtpClientFile[] { };
 
-            return client.GetListing(path).Select(file => new FtpClientFile(file.FullName, file.Type == FtpFileSystemObjectType.Directory)).ToArray<FtpClientFile>();
+            return client.GetListing(inFolder.path).Select(file => new FtpClientFile(file.FullName, file.Type == FtpFileSystemObjectType.Directory)).ToArray<FtpClientFile>();
         }
     }
 }
