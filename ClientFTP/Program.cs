@@ -7,7 +7,7 @@ namespace ClientFTP
         static void Main()
         {
             GUI.Init();
-            Connection.Open();
+            /*Connection.Open();
             Connection.DisplayFiles();
 
             long time = DateTime.Now.Second;
@@ -27,10 +27,10 @@ namespace ClientFTP
 
             Connection.Delete("a/atomeeee.jpg");
 
-            Connection.DisplayFiles();
+            Connection.DisplayFiles();*/
 
-            time = DateTime.Now.Second;
-            while (DateTime.Now.Second - time < 20);
+            long time = DateTime.Now.Second;
+            while (DateTime.Now.Second - time < 60);
 
             Connection.Close();
         }
