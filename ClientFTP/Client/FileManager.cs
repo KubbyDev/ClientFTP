@@ -19,5 +19,8 @@ namespace ClientFTP
                 .Concat(Directory.GetFiles(folder.path).Select(path => new FtpClientFile(path, false))) //Recupere tous les fichiers dans le dossier
                 .ToArray();
         }
+
+        public static void CreateDirectory(string path) => Directory.CreateDirectory(path);
+        public static bool FileExists(string path) => File.Exists(path);
     }
 }

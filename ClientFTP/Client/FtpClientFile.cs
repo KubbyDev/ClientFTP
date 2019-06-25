@@ -37,6 +37,10 @@ namespace ClientFTP
         public static string GetName(string path)
         {
             string[] folders = path.Split(new[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
+
+            if (folders.Length == 0)
+                return "";
+
             return folders[folders.Length - 1];
         }
 

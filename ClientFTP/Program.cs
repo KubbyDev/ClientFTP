@@ -7,19 +7,18 @@ namespace ClientFTP
         static void Main()
         {
             GUI.Init();
-            /*
+            
             Connection.Open("127.0.0.1", 21, new System.Net.NetworkCredential("admin", "admin1234"));
-            Connection.DisplayFiles();
 
             long time = DateTime.Now.Second;
             while (DateTime.Now.Second - time < 1) ;
 
             Connection.UploadFile(new FtpClientFile("F:/Images/folder/i.png"));
             Connection.UploadFile(new FtpClientFile("F:/Images/folder", true));
-            Connection.DisplayFiles();
 
-            Connection.DownloadFile("atome.jpg", "F:/Images/");
+            Connection.DownloadFile(new FtpClientFile("/", true), new FtpClientFile("F:/Images/abc", true));
 
+            /*
             Connection.Move("atome.jpg", "a/");
             Connection.Rename("a/atome.jpg", "atomeeee.jpg");
 
