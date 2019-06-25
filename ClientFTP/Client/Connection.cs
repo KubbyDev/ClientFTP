@@ -9,11 +9,6 @@ namespace ClientFTP
     {
         public static FtpClient client = null;
 
-        public static FtpClient GetClient()
-        {
-            return client;
-        }
-
         public static bool isConnectionActive()
         {
             return (client!=null);
@@ -42,30 +37,58 @@ namespace ClientFTP
                 Console.WriteLine(item);
         }
 
-        private static string GetName(string file)
+        /// <summary> fileToUpload est le fichier local, 
+        /// destinationFolder est le dossier destination sur le serveur </summary>
+        /// <param name="fileToUpload"></param>
+        /// <param name="destinationFolder"></param>
+        public static void UploadFile(FtpClientFile fileToUpload, FtpClientFile destinationFolder = null)
         {
-            string[] path = file.Split(new[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
-            return path[path.Length - 1];
-        }
+            //Si le dossier de destination n'est pas specifie on prend le dossier home
+            if (destinationFolder == null)
+                destinationFolder = FtpClientFile.serverHomeFolder;
 
-        //TODO: Rendre ces fonctions plus robustes
+            //Si le dossier de destination n'est pas un dossier on devient tout rouge
+            if( ! destinationFolder.isDirectory)
+            {
+                Console.Error.WriteLine("The destination must be a folder !");
+                return;
+            }
 
-        /// <summary> filePath est le chemin d'acces du fichier local, 
-        /// remoteDestination est la destination du fichier sur le serveur </summary>
-        /// <param name="filePath"></param>
-        /// <param name="remoteDestination"></param>
-        public static void UploadFile(string filePath, string remoteDestination = "/")
-        {
-            //Ajoute un separateur si besoin
-            if (remoteDestination[remoteDestination.Length - 1] != '/') remoteDestination += '/';
+            //Si le dossier de destination n'existe pas on le cree
+            client.CreateDirectory(destinationFolder.path);
 
-            //Ajoute le nom du fichier
-            string fileName = GetName(filePath);
-            remoteDestination += fileName;
+            //Si le fichier de depart est un dossier on upload tous les fichiers dedans
+            if (fileToUpload.isDirectory)
+            {
+                foreach (FtpClientFile file in FileManager.GetFilesInFolder(fileToUpload))
+                    UploadFile(file, new FtpClientFile(destinationFolder.path + fileToUpload.name, true));
 
-            Console.WriteLine("Uploading " + fileName + " ...");
+                return;
+            }
 
-            client.UploadFile(filePath, remoteDestination);
+            //Check si le fichier existe deja
+            string filePath = destinationFolder.path + fileToUpload.name;
+            if(client.FileExists(filePath))
+            {
+                string GetNewPath(int i)
+                {
+                    int dotIndex = fileToUpload.name.LastIndexOf('.');
+                    return destinationFolder.path + fileToUpload.name.Substring(0, dotIndex) + " (" + i + ")" + fileToUpload.name.Substring(dotIndex);
+                }
+
+                int index = 1;
+                filePath = GetNewPath(index);
+
+                while (client.FileExists(filePath))
+                {
+                    index++;
+                    filePath = GetNewPath(index);
+                }
+            }
+
+            //Upload le fichier
+            Console.WriteLine("Uploading " + FtpClientFile.GetName(filePath) + " ...");
+            client.UploadFile(fileToUpload.path, filePath);
         }
 
         /// <summary> filePath est le chemin d'acces du fichier sur le serveur, 
@@ -79,7 +102,7 @@ namespace ClientFTP
             if (filePath[0] != '/') filePath = '/' + filePath;
 
             //Ajoute le nom du fichier
-            string fileName = GetName(filePath);
+            string fileName = FtpClientFile.GetName(filePath);
             localDestination += fileName;
 
             Console.WriteLine("Downloading " + fileName + " ...");
@@ -98,7 +121,7 @@ namespace ClientFTP
             if (file[0] != '/') file = '/' + file;
             if (newPath[0] != '/') newPath = '/' + newPath;
 
-            client.MoveFile(file, newPath + "/" + GetName(file));
+            client.MoveFile(file, newPath + "/" + FtpClientFile.GetName(file));
         }
 
         /// <summary>
@@ -138,21 +161,7 @@ namespace ClientFTP
             //Ajoute un separateur si besoin
             if (path[0] != '/') path = '/' + path;
 
-            return client.GetListing(path).Select(file => new FtpClientFile(file.Name, file.Type == FtpFileSystemObjectType.Directory, file.FullName)).ToArray<FtpClientFile>();
-        }
-    }
-
-    class FtpClientFile {
-
-        public readonly string name;
-        public readonly bool isDirectory;
-        public readonly string path;
-        
-        public FtpClientFile(string name, bool isDir, string path)
-        {
-            this.name = name;
-            isDirectory = isDir;
-            this.path = path;
+            return client.GetListing(path).Select(file => new FtpClientFile(file.FullName, file.Type == FtpFileSystemObjectType.Directory)).ToArray<FtpClientFile>();
         }
     }
 }
