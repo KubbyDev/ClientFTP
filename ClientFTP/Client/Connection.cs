@@ -176,6 +176,23 @@ namespace ClientFTP
         }
 
         /// <summary>
+        /// Cree un dossier a l'emplacement specifie
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="name"></param>
+        public static void CreateDirectory(FtpClientFile path, string name)
+        {
+            //Si le dossier de destination n'est pas un dossier on devient tout rouge
+            if (!path.isDirectory)
+            {
+                Console.Error.WriteLine("The path must be a folder !");
+                return;
+            }
+
+            client.CreateDirectory(path.path + name);
+        }
+
+        /// <summary>
         /// Renvoie une liste des fichiers/dossiers presents dans le dossier specifie
         /// </summary>
         /// <param name="inFolder"></param>

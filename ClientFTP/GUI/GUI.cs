@@ -1,8 +1,6 @@
-﻿using FluentFTP;
 using System;
 using System.Collections.Generic;
 using System.Net;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ClientFTP
@@ -37,6 +35,7 @@ namespace ClientFTP
         {
             return selection;
         }
+
         //Ajoute du texte dans la console avec un saut de ligne
         public static void WriteLineToConsole(string s)
         {
