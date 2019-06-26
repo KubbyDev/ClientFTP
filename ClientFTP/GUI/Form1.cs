@@ -128,7 +128,9 @@ namespace ClientFTP
             if (fileGrid.SelectedRows.Count != 0)
             {
                 if (GUI.selection.isDirectory)
-                    GUI.MoveToDirectory(GUI.selection);
+                {
+                    GUI.MoveToDirectory(GUI.selection);  
+                }
                 else
                     GUI.WriteLineToConsole(GUI.selection.name + " is a file.");
             }
@@ -139,15 +141,10 @@ namespace ClientFTP
             if (fileGrid.SelectedRows.Count != 0)
             {
                 string cellValue = fileGrid.SelectedRows[0].Cells[1].Value.ToString();
-                FtpClientFile selection;
                 if (cellValue != "../")
-                    selection = GUI.GetFileByName(cellValue);
+                    GUI.ChangeSelection(GUI.GetFileByName(cellValue));
                 else
-                {
-                    selection = GUI.parentDirectory;
-                }
-
-                GUI.ChangeSelection(selection);
+                    GUI.ChangeSelection(GUI.parentDirectory);
             }
         }
     }

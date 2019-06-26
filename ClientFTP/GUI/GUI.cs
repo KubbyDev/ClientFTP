@@ -108,9 +108,7 @@ namespace ClientFTP
             if(file!=parentDirectory)
                 form.fileGrid.Rows.Add(fileType,file.name);
             else
-            {
                 form.fileGrid.Rows.Add(fileType, "../");
-            }
         }
         public static void DisplayFiles()
         {
@@ -151,18 +149,25 @@ namespace ClientFTP
 
         public static FtpClientFile GetParentDirectory()
         {
-            if (currentDirectory == FtpClientFile.serverHomeFolder) return null;
+            if (currentDirectory == FtpClientFile.serverHomeFolder)
+            {
+                WriteLineToConsole("Repertoire parent, le parent est maintenant égal à null");
+                return null;
+            }
 
             string parentPath = currentDirectory.path.Remove(currentDirectory.path.Length - 1);
             parentPath = parentPath.Substring(0,parentPath.LastIndexOf('/')+1);
-
-            return new FtpClientFile(parentPath, true);
+            
+            if(parentPath != "/")
+                return new FtpClientFile(parentPath, true);
+            return FtpClientFile.serverHomeFolder;
         }
 
         public static void MoveToDirectory(FtpClientFile newDirectory)
         {
             currentDirectory = newDirectory;
             parentDirectory = GetParentDirectory();
+            
             selection = null;    
             GUI.RefreshFileList();
             form.SetPathTextBox(newDirectory.path);
