@@ -128,11 +128,9 @@ namespace ClientFTP
             if (fileGrid.SelectedRows.Count != 0)
             {
                 if (GUI.selection.isDirectory)
-                {
-                    GUI.MoveToDirectory(GUI.selection);  
-                }
+                    GUI.MoveToDirectory(GUI.selection);
                 else
-                    GUI.WriteLineToConsole(GUI.selection.name + " is a file.");
+                    GUI.Download();
             }
         }
 
@@ -146,6 +144,11 @@ namespace ClientFTP
                 else
                     GUI.ChangeSelection(GUI.parentDirectory);
             }
+        }
+
+        private void DownloadButton_Click(object sender, EventArgs e)
+        {
+            GUI.Download();
         }
     }
 }

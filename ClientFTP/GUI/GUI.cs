@@ -150,10 +150,7 @@ namespace ClientFTP
         public static FtpClientFile GetParentDirectory()
         {
             if (currentDirectory == FtpClientFile.serverHomeFolder)
-            {
-                WriteLineToConsole("Repertoire parent, le parent est maintenant égal à null");
                 return null;
-            }
 
             string parentPath = currentDirectory.path.Remove(currentDirectory.path.Length - 1);
             parentPath = parentPath.Substring(0,parentPath.LastIndexOf('/')+1);
@@ -171,6 +168,24 @@ namespace ClientFTP
             selection = null;    
             GUI.RefreshFileList();
             form.SetPathTextBox(newDirectory.path);
+        }
+
+        public static void Download()
+        {
+            if (selection == null)
+                WriteLineToConsole("No file selected.");
+            else
+            {
+                FolderBrowserDialog FolderBrowserDialog1 = new FolderBrowserDialog();
+                if (FolderBrowserDialog1.ShowDialog() == DialogResult.OK) {
+                    Connection.DownloadFile(selection, new FtpClientFile(FolderBrowserDialog1.SelectedPath, true));
+                    WriteLineToConsole(selection.name+" downloaded at "+ FolderBrowserDialog1.SelectedPath);
+                }
+                else
+                {
+                    WriteLineToConsole("File download aborted.");
+                }
+            }
         }
     }
 }

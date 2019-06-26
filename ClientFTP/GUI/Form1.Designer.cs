@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.hostLabel = new System.Windows.Forms.Label();
             this.portTextBox = new System.Windows.Forms.TextBox();
             this.portLabel = new System.Windows.Forms.Label();
@@ -51,7 +50,6 @@
             this.consoleTextBox = new System.Windows.Forms.TextBox();
             this.actionPanel = new System.Windows.Forms.GroupBox();
             this.refreshButton = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
             this.createDirectoryButton = new System.Windows.Forms.Button();
             this.pathLabel = new System.Windows.Forms.Label();
             this.pathTextBox = new System.Windows.Forms.TextBox();
@@ -195,6 +193,7 @@
             this.downloadButton.TabIndex = 10;
             this.downloadButton.Text = "Download";
             this.downloadButton.UseVisualStyleBackColor = true;
+            this.downloadButton.Click += new System.EventHandler(this.DownloadButton_Click);
             // 
             // fileGrid
             // 
@@ -279,7 +278,6 @@
             // actionPanel
             // 
             this.actionPanel.Controls.Add(this.refreshButton);
-            this.actionPanel.Controls.Add(this.button1);
             this.actionPanel.Controls.Add(this.createDirectoryButton);
             this.actionPanel.Controls.Add(this.deleteButton);
             this.actionPanel.Controls.Add(this.renameButton);
@@ -294,23 +292,13 @@
             // 
             // refreshButton
             // 
-            this.refreshButton.Location = new System.Drawing.Point(105, 84);
+            this.refreshButton.Location = new System.Drawing.Point(105, 55);
             this.refreshButton.Name = "refreshButton";
             this.refreshButton.Size = new System.Drawing.Size(75, 23);
             this.refreshButton.TabIndex = 16;
             this.refreshButton.Text = "Refresh";
             this.refreshButton.UseVisualStyleBackColor = true;
             this.refreshButton.Click += new System.EventHandler(this.RefreshButton_Click);
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(105, 55);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(106, 23);
-            this.button1.TabIndex = 15;
-            this.button1.Text = "Remove Directory";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.Button1_Click_4);
             // 
             // createDirectoryButton
             // 
@@ -375,8 +363,6 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.Label hostLabel;
         private System.Windows.Forms.TextBox portTextBox;
         private System.Windows.Forms.Label portLabel;
@@ -395,7 +381,6 @@
         private System.Windows.Forms.GroupBox actionPanel;
         private System.Windows.Forms.TextBox hostTextBox;
         private System.Windows.Forms.Button createDirectoryButton;
-        private System.Windows.Forms.Button button1;
         public System.Windows.Forms.TextBox consoleTextBox;
         public System.Windows.Forms.DataGridView fileGrid;
         private System.Windows.Forms.Button refreshButton;
