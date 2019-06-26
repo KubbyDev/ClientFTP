@@ -10,76 +10,17 @@ namespace ClientFTP
             InitializeComponent();
         }
 
-        public string GetUsername()
-        {
-            return usernameTextBox.Text;
-        }
-        public string GetPassword()
-        {
-            return passwordTextBox.Text;
-        }
-        public void SetPassword(string s)
-        {
-            passwordTextBox.Text = s;
-        }
-        public string GetHost()
-        {
-            return hostTextBox.Text;
-        }
-        public int GetPort()
-        {
-            return int.Parse(portTextBox.Text);
-        }
+        public string GetUsername() => usernameTextBox.Text;
+        public string GetPassword() => passwordTextBox.Text;
+        public void SetPassword(string s) => passwordTextBox.Text = s;
+        public string GetHost() => hostTextBox.Text;
+        public int GetPort() => int.Parse(portTextBox.Text);
+        public void SetPathTextBox(string s) => pathTextBox.Text = s;
 
-        public void SetPathTextBox(string s)
-        {
-            pathTextBox.Text = s;
-        }
-
-        private void TextBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void TextBox1_TextChanged_1(object sender, EventArgs e)
-        {
-
-        }
-
-        private void Label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void Button1_Click(object sender, EventArgs e)
+        private void ConnectButton_Click(object sender, EventArgs e)
         {
             GUI.Connect();
             GUI.RefreshFileList();
-        }
-
-        private void Button1_Click_1(object sender, EventArgs e)
-        {
-
-        }
-
-        private void DataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
-        private void Button1_Click_2(object sender, EventArgs e)
-        {
-
-        }
-
-        private void UsernameValue_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void TextBox1_TextChanged_2(object sender, EventArgs e)
-        {
-
         }
 
         private void DisconnectButton_Click(object sender, EventArgs e)
@@ -88,24 +29,21 @@ namespace ClientFTP
             GUI.ClearFileGrid();
         }
 
-        private void Button1_Click_3(object sender, EventArgs e)
-        {
-
-        }
-
-        private void Button1_Click_4(object sender, EventArgs e)
-        {
-
-        }
-
-        private void Form_FormClosing(object sender, FormClosingEventArgs e)
+        private void Close(object sender, FormClosingEventArgs e)
         {
             GUI.Close();
         }
 
         private void DeleteButton_Click(object sender, EventArgs e)
         {
-            
+            if (GUI.selection == null)
+            {
+                GUI.WriteLineToConsole("You must select a file !");
+                return;
+            }
+
+            Connection.Delete(GUI.selection);
+            GUI.RefreshFileList();
         }
 
         private void RefreshButton_Click(object sender, EventArgs e)
@@ -144,6 +82,28 @@ namespace ClientFTP
                 else
                     GUI.ChangeSelection(GUI.parentDirectory);
             }
+        }
+
+        private void RenameButton_Click(object sender, EventArgs e)
+        {
+            if (GUI.selection == null)
+            {
+                GUI.WriteLineToConsole("You must select a file !");
+                return;
+            }
+
+            string newName = PromptDialog.Show("Select a new name", "New name:");
+            if(newName != "")
+                Connection.Rename(GUI.selection, newName);
+
+            GUI.RefreshFileList();
+        }
+
+        private void CreateDirectoryButton_Click(object sender, EventArgs e)
+        {
+            string name = PromptDialog.Show("Select a name", "Directory name:");
+            if (name != "")
+                GUI.CreateDirectory(name);
         }
 
         private void DownloadButton_Click(object sender, EventArgs e)

@@ -54,6 +54,8 @@
             this.pathLabel = new System.Windows.Forms.Label();
             this.pathTextBox = new System.Windows.Forms.TextBox();
             this.fileBrowserBox = new System.Windows.Forms.GroupBox();
+            this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.connectionOptionsPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.fileGrid)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -78,7 +80,6 @@
             this.portTextBox.Size = new System.Drawing.Size(39, 20);
             this.portTextBox.TabIndex = 3;
             this.portTextBox.Text = "21";
-            this.portTextBox.TextChanged += new System.EventHandler(this.TextBox1_TextChanged_1);
             // 
             // portLabel
             // 
@@ -108,7 +109,6 @@
             this.passwordLabel.Size = new System.Drawing.Size(56, 13);
             this.passwordLabel.TabIndex = 6;
             this.passwordLabel.Text = "Password:";
-            this.passwordLabel.Click += new System.EventHandler(this.Label1_Click);
             // 
             // usernameTextBox
             // 
@@ -116,7 +116,6 @@
             this.usernameTextBox.Name = "usernameTextBox";
             this.usernameTextBox.Size = new System.Drawing.Size(143, 20);
             this.usernameTextBox.TabIndex = 5;
-            this.usernameTextBox.TextChanged += new System.EventHandler(this.UsernameValue_TextChanged);
             // 
             // usernameLabel
             // 
@@ -136,7 +135,7 @@
             this.connectButton.TabIndex = 8;
             this.connectButton.Text = "Connect";
             this.connectButton.UseVisualStyleBackColor = true;
-            this.connectButton.Click += new System.EventHandler(this.Button1_Click);
+            this.connectButton.Click += new System.EventHandler(this.ConnectButton_Click);
             // 
             // hostTextBox
             // 
@@ -145,7 +144,6 @@
             this.hostTextBox.Size = new System.Drawing.Size(89, 20);
             this.hostTextBox.TabIndex = 1;
             this.hostTextBox.Text = "127.0.0.1";
-            this.hostTextBox.TextChanged += new System.EventHandler(this.TextBox1_TextChanged);
             // 
             // connectionOptionsPanel
             // 
@@ -177,19 +175,18 @@
             // 
             // uploadButton
             // 
-            this.uploadButton.Location = new System.Drawing.Point(22, 26);
+            this.uploadButton.Location = new System.Drawing.Point(7, 26);
             this.uploadButton.Name = "uploadButton";
-            this.uploadButton.Size = new System.Drawing.Size(75, 23);
+            this.uploadButton.Size = new System.Drawing.Size(100, 30);
             this.uploadButton.TabIndex = 10;
             this.uploadButton.Text = "Upload";
             this.uploadButton.UseVisualStyleBackColor = true;
-            this.uploadButton.Click += new System.EventHandler(this.Button1_Click_1);
             // 
             // downloadButton
             // 
-            this.downloadButton.Location = new System.Drawing.Point(22, 55);
+            this.downloadButton.Location = new System.Drawing.Point(7, 62);
             this.downloadButton.Name = "downloadButton";
-            this.downloadButton.Size = new System.Drawing.Size(75, 23);
+            this.downloadButton.Size = new System.Drawing.Size(100, 30);
             this.downloadButton.TabIndex = 10;
             this.downloadButton.Text = "Download";
             this.downloadButton.UseVisualStyleBackColor = true;
@@ -213,7 +210,6 @@
             this.fileGrid.Size = new System.Drawing.Size(465, 263);
             this.fileGrid.TabIndex = 0;
             this.fileGrid.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.FileGrid_CellClick);
-            this.fileGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView1_CellContentClick);
             this.fileGrid.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.FileGrid_CellDoubleClick);
             // 
             // elementType
@@ -234,19 +230,19 @@
             // 
             // renameButton
             // 
-            this.renameButton.Location = new System.Drawing.Point(22, 84);
+            this.renameButton.Location = new System.Drawing.Point(7, 100);
             this.renameButton.Name = "renameButton";
-            this.renameButton.Size = new System.Drawing.Size(75, 23);
+            this.renameButton.Size = new System.Drawing.Size(100, 30);
             this.renameButton.TabIndex = 12;
             this.renameButton.Text = "Rename";
             this.renameButton.UseVisualStyleBackColor = true;
-            this.renameButton.Click += new System.EventHandler(this.Button1_Click_2);
+            this.renameButton.Click += new System.EventHandler(this.RenameButton_Click);
             // 
             // deleteButton
             // 
-            this.deleteButton.Location = new System.Drawing.Point(22, 113);
+            this.deleteButton.Location = new System.Drawing.Point(119, 62);
             this.deleteButton.Name = "deleteButton";
-            this.deleteButton.Size = new System.Drawing.Size(75, 23);
+            this.deleteButton.Size = new System.Drawing.Size(100, 30);
             this.deleteButton.TabIndex = 13;
             this.deleteButton.Text = "Delete";
             this.deleteButton.UseVisualStyleBackColor = true;
@@ -273,7 +269,6 @@
             this.consoleTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.consoleTextBox.Size = new System.Drawing.Size(696, 118);
             this.consoleTextBox.TabIndex = 0;
-            this.consoleTextBox.TextChanged += new System.EventHandler(this.TextBox1_TextChanged_2);
             // 
             // actionPanel
             // 
@@ -292,9 +287,9 @@
             // 
             // refreshButton
             // 
-            this.refreshButton.Location = new System.Drawing.Point(105, 55);
+            this.refreshButton.Location = new System.Drawing.Point(119, 100);
             this.refreshButton.Name = "refreshButton";
-            this.refreshButton.Size = new System.Drawing.Size(75, 23);
+            this.refreshButton.Size = new System.Drawing.Size(100, 30);
             this.refreshButton.TabIndex = 16;
             this.refreshButton.Text = "Refresh";
             this.refreshButton.UseVisualStyleBackColor = true;
@@ -302,13 +297,14 @@
             // 
             // createDirectoryButton
             // 
-            this.createDirectoryButton.Location = new System.Drawing.Point(105, 26);
+            this.createDirectoryButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.createDirectoryButton.Location = new System.Drawing.Point(119, 26);
             this.createDirectoryButton.Name = "createDirectoryButton";
-            this.createDirectoryButton.Size = new System.Drawing.Size(106, 23);
+            this.createDirectoryButton.Size = new System.Drawing.Size(100, 30);
             this.createDirectoryButton.TabIndex = 14;
             this.createDirectoryButton.Text = "Create Directory";
             this.createDirectoryButton.UseVisualStyleBackColor = true;
-            this.createDirectoryButton.Click += new System.EventHandler(this.Button1_Click_3);
+            this.createDirectoryButton.Click += new System.EventHandler(this.CreateDirectoryButton_Click);
             // 
             // pathLabel
             // 
@@ -350,6 +346,7 @@
             this.Controls.Add(this.fileBrowserBox);
             this.Name = "Form1";
             this.Text = "Client FTP";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Close);
             this.connectionOptionsPanel.ResumeLayout(false);
             this.connectionOptionsPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.fileGrid)).EndInit();
@@ -389,6 +386,8 @@
         private System.Windows.Forms.Label pathLabel;
         private System.Windows.Forms.GroupBox fileBrowserBox;
         private System.Windows.Forms.TextBox pathTextBox;
+        private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
+        private System.Windows.Forms.ColorDialog colorDialog1;
     }
 }
 

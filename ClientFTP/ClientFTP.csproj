@@ -57,6 +57,7 @@
     <Compile Include="Client\FtpClientFile.cs" />
     <Compile Include="Client\FileManager.cs" />
     <Compile Include="Client\Connection.cs" />
+    <Compile Include="GUI\PromptDialog.cs" />
     <Compile Include="GUI\Form1.cs">
       <SubType>Form</SubType>
     </Compile>

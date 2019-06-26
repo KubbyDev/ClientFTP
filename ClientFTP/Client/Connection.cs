@@ -172,7 +172,10 @@ namespace ClientFTP
         /// <param name="file"></param>
         public static void Delete(FtpClientFile file)
         {
-            client.DeleteFile(file.path);
+            if (file.isDirectory)
+                client.DeleteDirectory(file.path);
+            else
+                client.DeleteFile(file.path);
         }
 
         /// <summary>

@@ -165,9 +165,15 @@ namespace ClientFTP
             currentDirectory = newDirectory;
             parentDirectory = GetParentDirectory();
             
-            selection = null;    
+            selection = null;
             GUI.RefreshFileList();
             form.SetPathTextBox(newDirectory.path);
+        }
+
+        public static void CreateDirectory(string name)
+        {
+            Connection.CreateDirectory(currentDirectory, name);
+            RefreshFileList();
         }
 
         public static void Download()
