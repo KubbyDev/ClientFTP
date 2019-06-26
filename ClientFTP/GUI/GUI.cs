@@ -10,15 +10,15 @@ namespace ClientFTP
         private static Form1 form;
         public static void Init()
         {
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
             form = new Form1();
-            new Task(() =>
-            {
-                
-                Application.EnableVisualStyles();
-                Application.SetCompatibleTextRenderingDefault(false);
-                Application.Run(form);
+            Application.Run(form);
+        }
 
-            }).Start();
+        public static void Close()
+        {
+            Disconnect();
         }
 
         private static void WriteLineToConsole(string s)

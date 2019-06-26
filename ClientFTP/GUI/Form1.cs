@@ -10,7 +10,7 @@ namespace ClientFTP
             InitializeComponent();
         }
 
-        public System.Windows.Forms.TextBox GetConsoleTextBox()
+        public TextBox GetConsoleTextBox()
         {
             return consoleTextBox;
         }
@@ -32,7 +32,7 @@ namespace ClientFTP
         }
         public int GetPort()
         {
-            return Int32.Parse(portTextBox.Text);
+            return int.Parse(portTextBox.Text);
         }
         private void TextBox1_TextChanged(object sender, EventArgs e)
         {
@@ -92,6 +92,11 @@ namespace ClientFTP
         private void Button1_Click_4(object sender, EventArgs e)
         {
 
+        }
+
+        private void Form_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            GUI.Close();
         }
     }
 }
