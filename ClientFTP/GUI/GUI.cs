@@ -14,24 +14,19 @@ namespace ClientFTP
         public static FtpClientFile parentDirectory;
         private static FtpClientFile currentDirectory;
         private static List<FtpClientFile> clientFiles;
-        //private Image folderIcon;
+
         public static void Init()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            form = new Form1();
             selection = null;
             parentDirectory = null;
             currentDirectory = null;
             clientFiles = new List<FtpClientFile>();
             form.SetPathTextBox("");
-
-            new Task(() =>
-            {
-                
-                Application.EnableVisualStyles();
-                Application.SetCompatibleTextRenderingDefault(false);
-                Application.Run(form);
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            form = new Form1();
+            Application.Run(form);
+        }
 
         public static void Close()
         {
