@@ -10,10 +10,6 @@ namespace ClientFTP
             InitializeComponent();
         }
 
-        public TextBox GetConsoleTextBox()
-        {
-            return consoleTextBox;
-        }
         public string GetUsername()
         {
             return usernameTextBox.Text;
@@ -34,6 +30,12 @@ namespace ClientFTP
         {
             return int.Parse(portTextBox.Text);
         }
+
+        public void SetPathTextBox(string s)
+        {
+            pathTextBox.Text = s;
+        }
+
         private void TextBox1_TextChanged(object sender, EventArgs e)
         {
 
@@ -52,6 +54,7 @@ namespace ClientFTP
         private void Button1_Click(object sender, EventArgs e)
         {
             GUI.Connect();
+            GUI.RefreshFileList();
         }
 
         private void Button1_Click_1(object sender, EventArgs e)
@@ -82,6 +85,7 @@ namespace ClientFTP
         private void DisconnectButton_Click(object sender, EventArgs e)
         {
             GUI.Disconnect();
+            GUI.ClearFileGrid();
         }
 
         private void Button1_Click_3(object sender, EventArgs e)
@@ -97,6 +101,54 @@ namespace ClientFTP
         private void Form_FormClosing(object sender, FormClosingEventArgs e)
         {
             GUI.Close();
+        }
+
+        private void DeleteButton_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void RefreshButton_Click(object sender, EventArgs e)
+        {
+            GUI.RefreshFileList();
+        }
+
+        //Event : Touche Enter dans le champ "password"
+        private void PasswordTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode == Keys.Enter)
+            {
+                e.SuppressKeyPress = true;
+                GUI.Connect();
+            }
+        }
+
+        private void FileGrid_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (fileGrid.SelectedRows.Count != 0)
+            {
+                if (GUI.selection.isDirectory)
+                    GUI.MoveToDirectory(GUI.selection);
+                else
+                    GUI.WriteLineToConsole(GUI.selection.name + " is a file.");
+            }
+        }
+
+        private void FileGrid_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (fileGrid.SelectedRows.Count != 0)
+            {
+                string cellValue = fileGrid.SelectedRows[0].Cells[1].Value.ToString();
+                FtpClientFile selection;
+                if (cellValue != "../")
+                    selection = GUI.GetFileByName(cellValue);
+                else
+                {
+                    selection = GUI.parentDirectory;
+                }
+
+                GUI.ChangeSelection(selection);
+            }
         }
     }
 }

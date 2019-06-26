@@ -42,20 +42,25 @@
             this.disconnectButton = new System.Windows.Forms.Button();
             this.uploadButton = new System.Windows.Forms.Button();
             this.downloadButton = new System.Windows.Forms.Button();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.Type = new System.Windows.Forms.DataGridViewImageColumn();
-            this.ElementName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.fileGrid = new System.Windows.Forms.DataGridView();
+            this.elementType = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.elementName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.renameButton = new System.Windows.Forms.Button();
             this.deleteButton = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.consoleTextBox = new System.Windows.Forms.TextBox();
             this.actionPanel = new System.Windows.Forms.GroupBox();
-            this.createDirectoryButton = new System.Windows.Forms.Button();
+            this.refreshButton = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
+            this.createDirectoryButton = new System.Windows.Forms.Button();
+            this.pathLabel = new System.Windows.Forms.Label();
+            this.pathTextBox = new System.Windows.Forms.TextBox();
+            this.fileBrowserBox = new System.Windows.Forms.GroupBox();
             this.connectionOptionsPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fileGrid)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.actionPanel.SuspendLayout();
+            this.fileBrowserBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // hostLabel
@@ -94,6 +99,7 @@
             this.passwordTextBox.PasswordChar = '*';
             this.passwordTextBox.Size = new System.Drawing.Size(143, 20);
             this.passwordTextBox.TabIndex = 7;
+            this.passwordTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.PasswordTextBox_KeyDown);
             // 
             // passwordLabel
             // 
@@ -190,31 +196,42 @@
             this.downloadButton.Text = "Download";
             this.downloadButton.UseVisualStyleBackColor = true;
             // 
-            // dataGridView1
+            // fileGrid
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Type,
-            this.ElementName});
-            this.dataGridView1.Location = new System.Drawing.Point(244, 12);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(476, 301);
-            this.dataGridView1.TabIndex = 0;
-            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView1_CellContentClick);
+            this.fileGrid.AllowUserToAddRows = false;
+            this.fileGrid.AllowUserToDeleteRows = false;
+            this.fileGrid.AllowUserToResizeRows = false;
+            this.fileGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.fileGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.elementType,
+            this.elementName});
+            this.fileGrid.Location = new System.Drawing.Point(249, 22);
+            this.fileGrid.MultiSelect = false;
+            this.fileGrid.Name = "fileGrid";
+            this.fileGrid.ReadOnly = true;
+            this.fileGrid.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            this.fileGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.fileGrid.Size = new System.Drawing.Size(465, 263);
+            this.fileGrid.TabIndex = 0;
+            this.fileGrid.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.FileGrid_CellClick);
+            this.fileGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView1_CellContentClick);
+            this.fileGrid.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.FileGrid_CellDoubleClick);
             // 
-            // Type
+            // elementType
             // 
-            this.Type.HeaderText = "";
-            this.Type.Name = "Type";
-            this.Type.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.Type.Width = 20;
+            this.elementType.HeaderText = "Type";
+            this.elementType.Name = "elementType";
+            this.elementType.ReadOnly = true;
+            this.elementType.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.elementType.Width = 75;
             // 
-            // ElementName
+            // elementName
             // 
-            this.ElementName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.ElementName.HeaderText = "Element Name";
-            this.ElementName.Name = "ElementName";
-            this.ElementName.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.elementName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.elementName.HeaderText = "Name";
+            this.elementName.Name = "elementName";
+            this.elementName.ReadOnly = true;
+            this.elementName.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             // 
             // renameButton
             // 
@@ -234,6 +251,7 @@
             this.deleteButton.TabIndex = 13;
             this.deleteButton.Text = "Delete";
             this.deleteButton.UseVisualStyleBackColor = true;
+            this.deleteButton.Click += new System.EventHandler(this.DeleteButton_Click);
             // 
             // groupBox1
             // 
@@ -260,6 +278,7 @@
             // 
             // actionPanel
             // 
+            this.actionPanel.Controls.Add(this.refreshButton);
             this.actionPanel.Controls.Add(this.button1);
             this.actionPanel.Controls.Add(this.createDirectoryButton);
             this.actionPanel.Controls.Add(this.deleteButton);
@@ -273,15 +292,15 @@
             this.actionPanel.TabStop = false;
             this.actionPanel.Text = "Actions";
             // 
-            // createDirectoryButton
+            // refreshButton
             // 
-            this.createDirectoryButton.Location = new System.Drawing.Point(105, 26);
-            this.createDirectoryButton.Name = "createDirectoryButton";
-            this.createDirectoryButton.Size = new System.Drawing.Size(106, 23);
-            this.createDirectoryButton.TabIndex = 14;
-            this.createDirectoryButton.Text = "Create Directory";
-            this.createDirectoryButton.UseVisualStyleBackColor = true;
-            this.createDirectoryButton.Click += new System.EventHandler(this.Button1_Click_3);
+            this.refreshButton.Location = new System.Drawing.Point(105, 84);
+            this.refreshButton.Name = "refreshButton";
+            this.refreshButton.Size = new System.Drawing.Size(75, 23);
+            this.refreshButton.TabIndex = 16;
+            this.refreshButton.Text = "Refresh";
+            this.refreshButton.UseVisualStyleBackColor = true;
+            this.refreshButton.Click += new System.EventHandler(this.RefreshButton_Click);
             // 
             // button1
             // 
@@ -293,6 +312,44 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.Button1_Click_4);
             // 
+            // createDirectoryButton
+            // 
+            this.createDirectoryButton.Location = new System.Drawing.Point(105, 26);
+            this.createDirectoryButton.Name = "createDirectoryButton";
+            this.createDirectoryButton.Size = new System.Drawing.Size(106, 23);
+            this.createDirectoryButton.TabIndex = 14;
+            this.createDirectoryButton.Text = "Create Directory";
+            this.createDirectoryButton.UseVisualStyleBackColor = true;
+            this.createDirectoryButton.Click += new System.EventHandler(this.Button1_Click_3);
+            // 
+            // pathLabel
+            // 
+            this.pathLabel.AutoSize = true;
+            this.pathLabel.Location = new System.Drawing.Point(6, 287);
+            this.pathLabel.Name = "pathLabel";
+            this.pathLabel.Size = new System.Drawing.Size(32, 13);
+            this.pathLabel.TabIndex = 16;
+            this.pathLabel.Text = "Path:";
+            // 
+            // pathTextBox
+            // 
+            this.pathTextBox.Location = new System.Drawing.Point(41, 284);
+            this.pathTextBox.Name = "pathTextBox";
+            this.pathTextBox.ReadOnly = true;
+            this.pathTextBox.Size = new System.Drawing.Size(430, 20);
+            this.pathTextBox.TabIndex = 17;
+            // 
+            // fileBrowserBox
+            // 
+            this.fileBrowserBox.Controls.Add(this.pathLabel);
+            this.fileBrowserBox.Controls.Add(this.pathTextBox);
+            this.fileBrowserBox.Location = new System.Drawing.Point(243, 7);
+            this.fileBrowserBox.Name = "fileBrowserBox";
+            this.fileBrowserBox.Size = new System.Drawing.Size(476, 312);
+            this.fileBrowserBox.TabIndex = 18;
+            this.fileBrowserBox.TabStop = false;
+            this.fileBrowserBox.Text = "File Browser";
+            // 
             // Form1
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -300,16 +357,19 @@
             this.ClientSize = new System.Drawing.Size(731, 474);
             this.Controls.Add(this.actionPanel);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.fileGrid);
             this.Controls.Add(this.connectionOptionsPanel);
+            this.Controls.Add(this.fileBrowserBox);
             this.Name = "Form1";
             this.Text = "Client FTP";
             this.connectionOptionsPanel.ResumeLayout(false);
             this.connectionOptionsPanel.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fileGrid)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.actionPanel.ResumeLayout(false);
+            this.fileBrowserBox.ResumeLayout(false);
+            this.fileBrowserBox.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -329,17 +389,21 @@
         private System.Windows.Forms.Button disconnectButton;
         private System.Windows.Forms.Button uploadButton;
         private System.Windows.Forms.Button downloadButton;
-        private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Button renameButton;
         private System.Windows.Forms.Button deleteButton;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox actionPanel;
         private System.Windows.Forms.TextBox hostTextBox;
-        private System.Windows.Forms.DataGridViewImageColumn Type;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ElementName;
         private System.Windows.Forms.Button createDirectoryButton;
-        private System.Windows.Forms.TextBox consoleTextBox;
         private System.Windows.Forms.Button button1;
+        public System.Windows.Forms.TextBox consoleTextBox;
+        public System.Windows.Forms.DataGridView fileGrid;
+        private System.Windows.Forms.Button refreshButton;
+        private System.Windows.Forms.DataGridViewTextBoxColumn elementType;
+        private System.Windows.Forms.DataGridViewTextBoxColumn elementName;
+        private System.Windows.Forms.Label pathLabel;
+        private System.Windows.Forms.GroupBox fileBrowserBox;
+        private System.Windows.Forms.TextBox pathTextBox;
     }
 }
 

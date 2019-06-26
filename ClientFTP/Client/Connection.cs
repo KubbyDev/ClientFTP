@@ -1,5 +1,6 @@
 ﻿using FluentFTP;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 
@@ -179,12 +180,12 @@ namespace ClientFTP
         /// </summary>
         /// <param name="inFolder"></param>
         /// <returns></returns>
-        public static FtpClientFile[] GetAllFiles(FtpClientFile inFolder)
+        public static List<FtpClientFile> GetAllFiles(FtpClientFile inFolder)
         {
             if (!inFolder.isDirectory)
-                return new FtpClientFile[] { };
+                return new List<FtpClientFile>();
 
-            return client.GetListing(inFolder.path).Select(file => new FtpClientFile(file.FullName, file.Type == FtpFileSystemObjectType.Directory)).ToArray<FtpClientFile>();
+            return client.GetListing(inFolder.path).Select(file => new FtpClientFile(file.FullName, file.Type == FtpFileSystemObjectType.Directory)).ToList<FtpClientFile>();
         }
     }
 }
