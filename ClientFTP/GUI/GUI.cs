@@ -17,14 +17,14 @@ namespace ClientFTP
 
         public static void Init()
         {
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            form = new Form1();
             selection = null;
             parentDirectory = null;
             currentDirectory = null;
             clientFiles = new List<FtpClientFile>();
             form.SetPathTextBox("");
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            form = new Form1();
             Application.Run(form);
         }
 
