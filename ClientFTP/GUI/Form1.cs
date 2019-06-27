@@ -36,6 +36,11 @@ namespace ClientFTP
 
         private void DeleteButton_Click(object sender, EventArgs e)
         {
+            Delete();
+        }
+
+        private void Delete()
+        {
             if (GUI.selection == null)
             {
                 GUI.WriteLineToConsole("You must select a file !");
@@ -109,6 +114,13 @@ namespace ClientFTP
         private void DownloadButton_Click(object sender, EventArgs e)
         {
             GUI.Download();
+        }
+
+        //Appuie sur Delete (Suppr) dans la grid
+        private void FileGrid_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
+                Delete();
         }
     }
 }

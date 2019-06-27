@@ -162,7 +162,8 @@ namespace ClientFTP
         /// <param name="newName"></param>
         public static void Rename(FtpClientFile file, string newName)
         {
-            string newPath = file.path.Substring(0, file.path.LastIndexOf('/') + 1) + newName;
+            string newPath = file.path.Substring(0, file.path.Length - 1);
+            newPath = newPath.Substring(0, newPath.LastIndexOf('/') + 1) + newName;
             client.Rename(file.path, newPath);
         }
 

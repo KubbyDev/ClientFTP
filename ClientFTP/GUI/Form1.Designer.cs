@@ -55,7 +55,6 @@
             this.pathTextBox = new System.Windows.Forms.TextBox();
             this.fileBrowserBox = new System.Windows.Forms.GroupBox();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.connectionOptionsPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.fileGrid)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -211,6 +210,7 @@
             this.fileGrid.TabIndex = 0;
             this.fileGrid.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.FileGrid_CellClick);
             this.fileGrid.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.FileGrid_CellDoubleClick);
+            this.fileGrid.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FileGrid_KeyDown);
             // 
             // elementType
             // 
@@ -280,7 +280,7 @@
             this.actionPanel.Controls.Add(this.uploadButton);
             this.actionPanel.Location = new System.Drawing.Point(12, 155);
             this.actionPanel.Name = "actionPanel";
-            this.actionPanel.Size = new System.Drawing.Size(225, 157);
+            this.actionPanel.Size = new System.Drawing.Size(225, 164);
             this.actionPanel.TabIndex = 15;
             this.actionPanel.TabStop = false;
             this.actionPanel.Text = "Actions";
@@ -338,7 +338,7 @@
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(731, 474);
+            this.ClientSize = new System.Drawing.Size(731, 473);
             this.Controls.Add(this.actionPanel);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.fileGrid);
@@ -387,7 +387,6 @@
         private System.Windows.Forms.GroupBox fileBrowserBox;
         private System.Windows.Forms.TextBox pathTextBox;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
-        private System.Windows.Forms.ColorDialog colorDialog1;
     }
 }
 
