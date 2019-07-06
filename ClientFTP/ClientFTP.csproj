@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{420BD178-7F6C-4370-9FBF-71BDB4867540}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <RootNamespace>ClientFTP</RootNamespace>
     <AssemblyName>ClientFTP</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>

@@ -55,6 +55,7 @@
             this.pathTextBox = new System.Windows.Forms.TextBox();
             this.fileBrowserBox = new System.Windows.Forms.GroupBox();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.connectionOptionsPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.fileGrid)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -68,7 +69,7 @@
             this.hostLabel.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.hostLabel.Location = new System.Drawing.Point(3, 12);
             this.hostLabel.Name = "hostLabel";
-            this.hostLabel.Size = new System.Drawing.Size(32, 13);
+            this.hostLabel.Size = new System.Drawing.Size(41, 17);
             this.hostLabel.TabIndex = 0;
             this.hostLabel.Text = "Host:";
             // 
@@ -76,7 +77,7 @@
             // 
             this.portTextBox.Location = new System.Drawing.Point(171, 9);
             this.portTextBox.Name = "portTextBox";
-            this.portTextBox.Size = new System.Drawing.Size(39, 20);
+            this.portTextBox.Size = new System.Drawing.Size(39, 22);
             this.portTextBox.TabIndex = 3;
             this.portTextBox.Text = "21";
             // 
@@ -86,7 +87,7 @@
             this.portLabel.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.portLabel.Location = new System.Drawing.Point(136, 12);
             this.portLabel.Name = "portLabel";
-            this.portLabel.Size = new System.Drawing.Size(29, 13);
+            this.portLabel.Size = new System.Drawing.Size(38, 17);
             this.portLabel.TabIndex = 2;
             this.portLabel.Text = "Port:";
             // 
@@ -95,7 +96,7 @@
             this.passwordTextBox.Location = new System.Drawing.Point(67, 61);
             this.passwordTextBox.Name = "passwordTextBox";
             this.passwordTextBox.PasswordChar = '*';
-            this.passwordTextBox.Size = new System.Drawing.Size(143, 20);
+            this.passwordTextBox.Size = new System.Drawing.Size(143, 22);
             this.passwordTextBox.TabIndex = 7;
             this.passwordTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.PasswordTextBox_KeyDown);
             // 
@@ -105,7 +106,7 @@
             this.passwordLabel.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.passwordLabel.Location = new System.Drawing.Point(3, 64);
             this.passwordLabel.Name = "passwordLabel";
-            this.passwordLabel.Size = new System.Drawing.Size(56, 13);
+            this.passwordLabel.Size = new System.Drawing.Size(73, 17);
             this.passwordLabel.TabIndex = 6;
             this.passwordLabel.Text = "Password:";
             // 
@@ -113,7 +114,7 @@
             // 
             this.usernameTextBox.Location = new System.Drawing.Point(67, 35);
             this.usernameTextBox.Name = "usernameTextBox";
-            this.usernameTextBox.Size = new System.Drawing.Size(143, 20);
+            this.usernameTextBox.Size = new System.Drawing.Size(143, 22);
             this.usernameTextBox.TabIndex = 5;
             // 
             // usernameLabel
@@ -122,7 +123,7 @@
             this.usernameLabel.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.usernameLabel.Location = new System.Drawing.Point(3, 38);
             this.usernameLabel.Name = "usernameLabel";
-            this.usernameLabel.Size = new System.Drawing.Size(58, 13);
+            this.usernameLabel.Size = new System.Drawing.Size(77, 17);
             this.usernameLabel.TabIndex = 4;
             this.usernameLabel.Text = "Username:";
             // 
@@ -140,7 +141,7 @@
             // 
             this.hostTextBox.Location = new System.Drawing.Point(41, 7);
             this.hostTextBox.Name = "hostTextBox";
-            this.hostTextBox.Size = new System.Drawing.Size(89, 20);
+            this.hostTextBox.Size = new System.Drawing.Size(89, 22);
             this.hostTextBox.TabIndex = 1;
             this.hostTextBox.Text = "127.0.0.1";
             // 
@@ -180,6 +181,7 @@
             this.uploadButton.TabIndex = 10;
             this.uploadButton.Text = "Upload";
             this.uploadButton.UseVisualStyleBackColor = true;
+            this.uploadButton.Click += new System.EventHandler(this.UploadButton_Click);
             // 
             // downloadButton
             // 
@@ -311,7 +313,7 @@
             this.pathLabel.AutoSize = true;
             this.pathLabel.Location = new System.Drawing.Point(6, 287);
             this.pathLabel.Name = "pathLabel";
-            this.pathLabel.Size = new System.Drawing.Size(32, 13);
+            this.pathLabel.Size = new System.Drawing.Size(41, 17);
             this.pathLabel.TabIndex = 16;
             this.pathLabel.Text = "Path:";
             // 
@@ -320,7 +322,7 @@
             this.pathTextBox.Location = new System.Drawing.Point(41, 284);
             this.pathTextBox.Name = "pathTextBox";
             this.pathTextBox.ReadOnly = true;
-            this.pathTextBox.Size = new System.Drawing.Size(430, 20);
+            this.pathTextBox.Size = new System.Drawing.Size(430, 22);
             this.pathTextBox.TabIndex = 17;
             // 
             // fileBrowserBox
@@ -333,6 +335,10 @@
             this.fileBrowserBox.TabIndex = 18;
             this.fileBrowserBox.TabStop = false;
             this.fileBrowserBox.Text = "File Browser";
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
             // 
             // Form1
             // 
@@ -387,6 +393,7 @@
         private System.Windows.Forms.GroupBox fileBrowserBox;
         private System.Windows.Forms.TextBox pathTextBox;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
     }
 }
 

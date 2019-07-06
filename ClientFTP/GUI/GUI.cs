@@ -41,7 +41,6 @@ namespace ClientFTP
         {
             form.consoleTextBox.AppendText(s);
             form.consoleTextBox.AppendText(Environment.NewLine);
-            form.consoleTextBox.AppendText(Environment.NewLine);
         }
 
         //Ajoute du texte dans la console sans retour à la ligne
@@ -192,6 +191,22 @@ namespace ClientFTP
                     WriteLineToConsole("File download aborted.");
                 }
             }
+        }
+
+        public static void Upload()
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                Connection.UploadFile(new FtpClientFile(dialog.FileName.Replace("\\", "/")), currentDirectory);
+                WriteLineToConsole(dialog.SafeFileName + " uploaded at " + currentDirectory.path);
+            }
+            else
+            {
+                WriteLineToConsole("File upload aborted.");
+            }
+
+            RefreshFileList();
         }
     }
 }

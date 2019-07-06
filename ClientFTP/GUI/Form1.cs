@@ -122,5 +122,10 @@ namespace ClientFTP
             if (e.KeyCode == Keys.Delete)
                 Delete();
         }
+
+        private void UploadButton_Click(object sender, EventArgs e)
+        {
+            GUI.Upload();
+        }
     }
 }
